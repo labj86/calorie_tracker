@@ -1,22 +1,9 @@
-import { Dispatch } from "react";
-import { Activity } from "../types"
-import { categories } from "../data/categories"
 import { PencilSquareIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { ActivityActions } from "../reducers/activity-reducer";
+import { useActivity } from "../hooks/useActivity";
 
-type ActivityListProps = {
-   activities: Activity[]
-   dispatch: Dispatch<ActivityActions>
-}
+export default function ActivityList() {
 
-export default function ActivityList({ activities, dispatch }: ActivityListProps) {
-
-   // const categoryName = useMemo(() => 
-   //    (category: Activity['category']) => 
-   //       categories.map( cat => cat.id === category ? cat.name : '')
-   // , [activities])
-   const categoryName = (category: Activity['category']) =>
-      categories.map(cat => cat.id === category ? cat.name : '')
+   const { state, dispatch, categoryName } = useActivity()
 
    return (
       <>
@@ -24,11 +11,9 @@ export default function ActivityList({ activities, dispatch }: ActivityListProps
             Comida y Actividades
          </h2>
 
-
-
-         {activities.length === 0 ?
+         {state.activities.length === 0 ?
             <p className="text-center my-5">No hay actividades aún...</p> :
-            activities.map(activity => (
+            state.activities.map(activity => (
                <div key={activity.id} className="px-5 py-10 bg-white mt-5 flex justify-between shadow">
                   <div className="space-y-2 relative">
                      <p className={`absolute -top-8 -left-8 px-10 py-2 text-white uppercase font-bold ${activity.category === 1 ? 'bg-lime-500' : 'bg-orange-500'}`}>
